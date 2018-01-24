@@ -37,10 +37,27 @@ class SolicitacoesController extends AppController{
                 'order' => array('Solicitacao.id' => 'desc')
                 )));
     }
+     public $components = array('Paginator');
+
+    public $paginate = array(
+        'limit' => 10,
+        'order' => array(
+            'Solicitacao.id' => 'desc'
+        )
+    );  
     public function vispsicologo(){
-        $this->set('solicitacoes', $this->Solicitacao->find('all',
-                array('order' => array('Solicitacao.id' => 'desc'),
-                    'conditions' => array('Solicitacao.fechado' => 0))));
+        //$this->set('solicitacoes', $this->Solicitacao->find('all',
+        //        array('order' => array('Solicitacao.id' => 'desc'),
+        //            'conditions' => array('Solicitacao.fechado' => 0))));
+        //$this->set('posts', $this->Post->find('all', 
+                //array('conditions'=>array('user_id'=> $this->Auth->user('id')))));
+        $this->Paginator->settings = $this->paginate;
+
+    // similar to findAll(), but fetches paged results
+        $posts = $this->Paginator->paginate('Solicitacao',
+                array('Solicitacao.fechado' => 0));
+        $this->set('solicitacoes', $posts);
+        //echo debug($posts);
     }
         public function visuser(){
         $this->set('solicitacoes', $this->Solicitacao->find('all', 

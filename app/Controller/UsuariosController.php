@@ -69,9 +69,24 @@ class UsuariosController extends AppController{
         }
     }
     //Visualiza todos os usuários registrados
+    public $components = array('Paginator');
+
+    public $paginate = array(
+        'limit' => 25,
+        'order' => array(
+            'Usuario.id' => 'asc'
+        )
+    );
     public function vis(){
-        $this->set('usuarios', $this->Usuario->find('all',
-                array('conditions' => array('Usuario.psicologo' => 0))));
+        //$this->set('usuarios', $this->Usuario->find('all',
+        //        array('conditions' => array('Usuario.psicologo' => 0))));
+        
+        $this->Paginator->settings = $this->paginate;
+
+    // similar to findAll(), but fetches paged results
+        $posts = $this->Paginator->paginate('Usuario',
+                array('Usuario.psicologo' => 0));
+        $this->set('usuarios', $posts);
     }
     //edita usuário existente
     public function editar($id){
