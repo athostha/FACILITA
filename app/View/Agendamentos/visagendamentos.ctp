@@ -12,15 +12,15 @@
         array('controller' => 'Solicitacoes', 'action' => 'dados')
 ); ?></li>
         <li><?php echo $this->Html->link(
-        'Ver atendimentos agendados',
+        'Atendimentos agendados',
         array('controller' => 'Agendamentos', 'action' => 'visagendamentos')
 ); ?></li>
         <li><?php echo $this->Html->link(
-        'Ver Usuários',
+        'Gerenciamento de Usuários',
             array('controller' => 'usuarios', 'action' => 'vis')
 ); ?></li>
          <li><?php echo $this->Html->link(
-        'Gerenciar motivos',
+        'Gerenciamento de motivos',
             array('controller' => 'motivos', 'action' => 'gerenciarmotivos')
 );       ?></li>
         <li><?php echo $this->Html->link(
