@@ -136,13 +136,17 @@ if($upsi == 0){
         ?>
             <tr>
                 <td><?php echo $date; ?></td>
-                <td><?php echo $agendamento['Agendamento']['comentario']; ?></td>
-                <td><?php if($agendamento['Agendamento']['comparecimento'] == 1){
-                    echo "compareceu";
+                <td><?php echo $agendamento['Agendamento']['comentario']; ?> </td>
+                <td><?php if($agendamento['Agendamento']['finalizado'] == 1){
+                    if($agendamento['Agendamento']['comparecimento'] == 1){
+                        echo "compareceu";
+                    }else{
+                        echo "Faltou";
+                    }
                 }else{
-                    echo "Faltou";
+                    echo 'Não realizada';
                 }
-                    ; ?></td>
+                        ; ?></td>
         <?php
             endforeach;
         ?>
