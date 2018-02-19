@@ -34,7 +34,6 @@
         <th>Nome</th>
         <th>Data</th>
         <th>Fechar agendamento</th>
-        <th>Delete</th>
     </tr>
         <?php
         //echo debug($agendamentos);
@@ -51,23 +50,11 @@
                 ); ?></td>
                 <td>
                 <?php
-            if($agendamento['Agendamento']['finalizado'] == 0){
-                echo $this->Form->postLink(
-                    'Finalizar agendamento',
-                    array('action' => 'fechar', $agendamento['Agendamento']['id']),
-                    array('confirm' => 'Are you sure?')
+                echo $this->Html->link(
+                    'Fechar agendamento',
+                    array('action' => 'fechamento', $agendamento['Agendamento']['id'])
                 );
-            }else{
-                echo 'Solicitação Fechada';
-            }
             ?></td>
-                <td><?php
-                echo $this->Form->postLink(
-                    'Delete',
-                    array('action' => 'delete', $agendamento['Agendamento']['id']),
-                    array('confirm' => 'Are you sure?')
-                );
-                ?></td>
         <?php
             endforeach;
         ?>

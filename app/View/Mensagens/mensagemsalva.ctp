@@ -1,4 +1,3 @@
-<?php //debug($descricaosolicitacao); ?>
 <nav>
     <ul>
         <li><?php echo $this->Html->link(
@@ -38,6 +37,33 @@
         <td><?php echo $descricaosolicitacao['Solicitacao']['descricao'] ?></td>
     </tr>
 </table>
+<table>
+    <tr>
+        <th>Data</th>
+        <th>Comentário</th>
+        <th>Comparecimento</th>
+    </tr>
+        <?php
+        //echo debug($agendamentos);
+            foreach($agendamentos as $agendamento):
+                $date = new DateTime($agendamento['Agendamento']['data']);
+                $date = $date->format('d/m/Y H:i:s');
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $agendamento['Agendamento']['comentario']; ?></td>
+                <td><?php if($agendamento['Agendamento']['comparecimento'] == 1){
+                    echo "compareceu";
+                }else{
+                    echo "Faltou";
+                }
+                    ; ?></td>
+        <?php
+            endforeach;
+        ?>
+    
+</table>
+
 <table>
     <tr>
         <th>Mensagem</th>

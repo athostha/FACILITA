@@ -41,13 +41,31 @@ class AgendamentosController extends AppController{
         return $this->redirect(array('action' => 'visagendamentos'));
     }
     
-    public function fechar($id){
-        $this->request->allowMethod('post');
+    public function fechamento($id){
         $this->Agendamento->id = $id;
-        if($this->Agendamento->updateAll(array("Agendamento.finalizado" => 1),
-                        array("Agendamento.id" => $id))){
-            $this->Flash->success(__('Agendamento finalizado'));
-            return $this->redirect(array('action' => 'visagendamentos'));
+        if (!$id) {
+            throw new NotFoundException(__('Invalido'));
+        };
+        $agendamento = $this->Agendamento->findById($id);
+        if (!$agendamento) {
+            throw new NotFoundException(__('Agendamento não existe'));
         }
+        if ($this->request->is(array('agendamento', 'put'))) {
+            $this->Agendamento->id = $id;
+            if ($this->Agendamento->save($this->request->data)) {
+                $this->Agendamento->updateAll(array("Agendamento.finalizado" => 1), 
+                    array("Agendamento.id" => $id));
+              $this->Flash->success(__('Agendamento finalizado com sucesso'));
+                return $this->redirect(array('controller' => 'Agendamentos',
+                    'action' => 'visagendamentos'));
+            }
+            $this->Flash->error(__('erro ao finalizar o agendamento'));
+            return $this->redirect(array(
+                    'action' => 'fechamento', $id));
+        }
+        if (!$this->request->data) {
+            $this->request->data = $agendamento;
+        }
+        
     }
 }

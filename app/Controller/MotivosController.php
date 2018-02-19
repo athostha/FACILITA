@@ -9,7 +9,7 @@ class MotivosController extends AppController{
 	public function isAuthorized() {
         // Admin can access every action
         $admin = $this->Session->read('Auth.User.admin');
-        if ($this->action === 'gerenciarmotivos') {
+        if ($this->action === 'gerenciarmotivos'&&$admin==1) {
 			return true;
 		}if ($this->action === 'delete') {
 			return true;

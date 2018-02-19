@@ -21,7 +21,10 @@ class UsuariosController extends AppController{
         if ($this->request->is('post')) {
             
             if ($this->Auth->login()) {
-                return $this->redirect($this->Auth->redirectUrl());
+                //return $this->redirect($this->Auth->redirectUrl());
+                return $this->redirect(array(
+                    'controller' => 'solicitacoes',
+                    'action' => 'index'));
             } else {
             $this->Flash->error(__('matricula ou senha inválida'));
             }
@@ -136,12 +139,19 @@ class UsuariosController extends AppController{
     }
     public function perfil($id){
         $this->set('usuario', $this->Usuario->findByid($id));
+        $this->set('agendamentos', $this->Usuario->Solicitacao->Agendamento->find('all',
+                        array('order' => array('Agendamento.data' => 'desc'),
+                            'conditions' => array('Usuario.id' => $id))));
+        $this->set('solicitacoes', $this->Usuario->Solicitacao->find('all',
+                        array('order' => array('Solicitacao.id' => 'desc'),
+                            'conditions' => array('Usuario.id' => $id))));
+        
         
     }
     
     public function novasenha($id){
         $this->Usuario->id = $id;
-
+        
         if (!$id) {
             throw new NotFoundException(__('Invalido'));
         };

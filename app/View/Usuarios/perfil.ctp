@@ -119,3 +119,111 @@ if($upsi == 0){
                     array('controller' => 'Usuarios', 'action' => 'novasenha', $this->Session->read('Auth.User.id'))
                 );
 }?>
+
+
+<?php if($upsi == 1){ ?>
+<table>
+    <tr>
+        <th>Data</th>
+        <th>Comentário</th>
+        <th>Comparecimento</th>
+    </tr>
+        <?php
+        //echo debug($agendamentos);
+            foreach($agendamentos as $agendamento):
+                $date = new DateTime($agendamento['Agendamento']['data']);
+                $date = $date->format('d/m/Y H:i:s');
+        ?>
+            <tr>
+                <td><?php echo $date; ?></td>
+                <td><?php echo $agendamento['Agendamento']['comentario']; ?></td>
+                <td><?php if($agendamento['Agendamento']['comparecimento'] == 1){
+                    echo "compareceu";
+                }else{
+                    echo "Faltou";
+                }
+                    ; ?></td>
+        <?php
+            endforeach;
+        ?>
+    
+</table>
+<table>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>descricao</th>
+        <th>Nova mensagem</th>
+        <th>motivos</th>
+        <th>Fechar solicitação</th>
+<!--        <th>debug</th> -->
+    </tr>
+<?php foreach ($solicitacoes as $solicitacao): ?>
+    <tr>
+        <td>
+            <?php
+            if($solicitacao['Solicitacao']['fechado'] == 0){
+                echo $this->Html->link(
+                    $solicitacao['Solicitacao']['id'],
+                    array('controller' => 'Mensagens',
+                        'action' => 'novamensagem', $solicitacao['Solicitacao']['id']));
+            }else{
+                echo $this->Html->link(
+                    $solicitacao['Solicitacao']['id'],
+                    array('controller' => 'Mensagens',
+                        'action' => 'mensagemsalva', $solicitacao['Solicitacao']['id']));
+            }
+            ?>
+        </td>
+        
+        <td><?php echo $solicitacao['Solicitacao']['descricao']; ?></td>
+                
+        <td>
+            
+            <?php
+            //debug($solicitacao['Mensagem']);
+                foreach ($solicitacao['Mensagem'] as $primeiramensagem):
+                endforeach;
+                
+                //echo debug($primeiramensagem);
+                if(isset($primeiramensagem)){
+                if(($primeiramensagem['lido'] == 0)
+                    &&($primeiramensagem['usuario_id'] !== $this->Session->read('Auth.User.id'))){
+                    echo "sim";
+                }else{
+                    echo "não";
+                }}else{
+                    echo "não";
+                }
+                $primeiramensagem = null;
+                ?>
+        <td>
+            <?php $mot = null ?>
+            <?php foreach ($solicitacao['Motivo'] as $mot): ?>
+            <?php if(isset($mut)){ echo ',';} ?>
+            <?php echo $mot['motivo']; ?>
+            <?php $mut = $mot['motivo']; ?>
+            <?php endforeach; ?>
+            <?php if($solicitacao['Solicitacao']['motivo_outros'] !== '' && isset($mot['motivo'])){ ?><?php echo ', ' ?><?php } ?>
+            <?php $mut = null ?>
+            <?php echo $solicitacao['Solicitacao']['motivo_outros']; ?>
+        </td>
+        <td>
+        <?php
+            if($solicitacao['Solicitacao']['fechado'] == 0){
+                echo $this->Form->postLink(
+                    'Fechar Solicitação',
+                    array('action' => 'fecharsolicitacao', $solicitacao['Solicitacao']['id']),
+                    array('confirm' => 'Are you sure?')
+                );
+            }else{
+                echo 'Solicitação Fechada';
+            }
+        ?>
+        </td>
+<!--        <td><?php //debug($mot); ?></td> -->
+    </tr>
+<?php endforeach; ?>
+
+</table>
+<?php } ?>

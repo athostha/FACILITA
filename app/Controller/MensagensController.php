@@ -102,9 +102,12 @@ class MensagensController extends AppController{
         foreach ($solicitacoes as $solicitacao):
             if($solicitacao['Solicitacao']['id'] == $solicitacaoid){
                 $this->set('descricaosolicitacao', $solicitacao);
+                
             }
         endforeach;
-        
+        $this->set('agendamentos', $this->Mensagem->Solicitacao->Agendamento->find('all',
+                        array('order' => array('Agendamento.data' => 'desc'),
+                            'conditions' => array('Solicitacao.id' => $solicitacaoid))));
         //exibe mensagens relacionadas a solicitacao selecionada
         $this->Mensagem->solicitacao_id = $solicitacaoid;
         $this->set('mensagens', $this->Mensagem->find('all',
