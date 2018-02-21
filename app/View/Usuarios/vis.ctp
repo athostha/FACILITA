@@ -17,7 +17,7 @@
 ); ?></li>
         <li><?php echo $this->Html->link(
         'Gerenciamento de Usuários',
-            array('controller' => 'usuarios', 'action' => 'vis')
+            array('controller' => 'usuarios', 'action' => 'vis', 'new')
 ); ?></li>
          <li><?php echo $this->Html->link(
         'Gerenciamento de motivos',
@@ -29,6 +29,13 @@
 ); ?></li>
     </ul>
 </nav>
+<?php
+    echo $this->Form->create('buscar',
+           array('url' => array('controller' => 'usuarios', 'action' => 'vis')));
+    echo $this->Form->input('Nome');
+    echo $this->Form->input('Matricula');
+    echo $this->Form->end('buscar');
+?>
 <table>
     <tr>
         <th>Id</th>
@@ -40,6 +47,7 @@
     </tr>
 <!-- Here's where we loop through our $posts array, printing out post info -->
 <?php //debug($this->request); ?>
+<?php if(isset($usuarios)) { ?>
 <?php foreach ($usuarios as $usuario): ?>
     <tr>
         <td><?php echo $usuario['Usuario']['id']; ?></td>
@@ -72,3 +80,4 @@
 
 </table>
 <?php  echo $this->Paginator->numbers(array('first' => 'First page')); ?>
+<?php } ?>

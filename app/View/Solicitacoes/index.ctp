@@ -21,7 +21,7 @@
 ); ?></li>
         <li><?php echo $this->Html->link(
         'Gerenciamento de Usuários',
-            array('controller' => 'usuarios', 'action' => 'vis')
+            array('controller' => 'usuarios', 'action' => 'vis', 'new')
 ); ?></li>
          <li><?php echo $this->Html->link(
         'Gerenciamento de motivos',

@@ -75,21 +75,61 @@ class UsuariosController extends AppController{
     public $components = array('Paginator');
 
     public $paginate = array(
-        'limit' => 25,
+        'limit' => 15,
         'order' => array(
             'Usuario.id' => 'asc'
         )
     );
-    public function vis(){
+    public function vis($tipo = null){
         //$this->set('usuarios', $this->Usuario->find('all',
         //        array('conditions' => array('Usuario.psicologo' => 0))));
         
-        $this->Paginator->settings = $this->paginate;
+    //    $this->Paginator->settings = $this->paginate;
 
     // similar to findAll(), but fetches paged results
-        $posts = $this->Paginator->paginate('Usuario',
-                array('Usuario.psicologo' => 0));
-        $this->set('usuarios', $posts);
+    //    $posts = $this->Paginator->paginate('Usuario',
+    //            array('Usuario.psicologo' => 0));
+    //    $this->set('usuarios', $posts);
+        
+        if($tipo == 'new'){
+            $this->Session->delete('busca.Nome', 'busca.Matricula');
+            //$this->Paginator->settings = $this->paginate;
+        
+            //$posts = $this->Paginator->paginate('Post',
+           //array('User.id' => 0));
+            //$this->set('posts', $posts);
+        }
+        if(!isset($posts)){
+            $this->Paginator->settings = $this->paginate;
+        
+            $posts = $this->Paginator->paginate('Usuario',
+            array('Usuario.psicologo !=' => 1,
+                'nome LIKE' => '%',
+                'matricula LIKE' => '%'));
+            $this->set('usuarios', $posts);
+        }
+        
+        //Se o formulário for enviado
+        if($this->request->is('post')){
+            
+            //Salvando os dados do formulário na sessão
+            $this->Session->write('busca.Nome', $this->request->data('buscar.Nome'));
+            $this->Session->write('busca.Matricula', $this->request->data('buscar.Matricula'));
+            //return $this->redirect(array('action' => 'search'));
+            
+        }
+        
+        if($this->Session->check('busca.Nome') && $this->Session->check('busca.Matricula')) {
+            
+            $this->Paginator->settings = $this->paginate;
+        
+            $posts = $this->Paginator->paginate('Usuario',
+            array('Usuario.psicologo !=' => 1,
+                'nome LIKE' => '%'.$this->Session->read('busca.Nome').'%',
+                'matricula LIKE' => '%'.$this->Session->read('busca.Matricula').'%'));
+
+            $this->set('usuarios', $posts);
+        }
     }
     //edita usuário existente
     public function editar($id){
