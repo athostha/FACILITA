@@ -43,11 +43,21 @@
         ?>
             <tr>
                 <td><?php        echo $agendamento['Usuario']['nome']; ?></td>
-                <td><?php        echo $this->Html->link(
+                <td><?php
+                if($agendamento['Solicitacao']['fechado'] === 0){
+                    echo $this->Html->link(
                     $date,
                     array('controller' => 'Mensagens',
                         'action' => 'novamensagem', $agendamento['Solicitacao']['id'])
-                ); ?></td>
+                );
+                }else{
+                    echo $this->Html->link(
+                    $date,
+                    array('controller' => 'Mensagens',
+                        'action' => 'mensagemsalva', $agendamento['Solicitacao']['id'])
+                    );
+                }
+                ?></td>
                 <td>
                 <?php
                 echo $this->Html->link(

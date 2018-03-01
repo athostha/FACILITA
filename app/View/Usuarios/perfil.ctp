@@ -126,7 +126,7 @@ if($upsi == 0){
     <tr>
         <th>Data</th>
         <th>Comentário</th>
-        <th>Comparecimento</th>
+        <th>Presença</th>
     </tr>
         <?php
         //echo debug($agendamentos);

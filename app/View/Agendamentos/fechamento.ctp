@@ -36,5 +36,6 @@ echo $this->Form->create('Agendamento', array(
 ));
 ?>
 <?php echo $this->Form->input('comentario', array('rows' => 3)); ?>
-<?php echo $this->Form->input('comparecimento', array('options' => array(1 => 'compareceu', 0 =>'faltou')));?>
+<?php echo $this->Form->input('comparecimento', array('options' => array(1 => 'compareceu', 0 =>'faltou'),
+    'label' => 'Presença'));?>
 <?php echo $this->Form->end(__('Finalizar')); ?>

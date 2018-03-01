@@ -73,7 +73,7 @@ $(document).ready(function(){
     <tr>
         <th>Id</th>
         <th>descricao</th>
-        <th>Nova mensagem</th>
+        <th>Status</th>
         <th>motivos</th>
         <th>autor</th>
 <!--        <th>debug</th> -->
@@ -103,11 +103,11 @@ $(document).ready(function(){
                 if(isset($primeiramensagem)){
                 if(($primeiramensagem['lido'] == 0)
                     &&($primeiramensagem['usuario_id'] !== $this->Session->read('Auth.User.id'))){
-                    echo "sim";
+                    echo "Nova mensagem";
                 }else{
-                    echo "não";
+                    echo "Sem Novas mensagens";
                 }}else{
-                    echo "não";
+                    echo "Nova Solicitação";
                 }
                 $primeiramensagem = null;
                 ?>
