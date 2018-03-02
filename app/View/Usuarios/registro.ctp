@@ -1,5 +1,5 @@
 <table>
-<?php echo $this->Form->create('Usuario'); ?>
+<?php echo $this->Form->create('Usuario', array('url' => array('action' => 'registro'), 'enctype' => 'multipart/form-data')); ?>
     <fieldset>
         <tr>
             <th>
@@ -69,6 +69,7 @@
             </td>
         </tr>
         <tr>
+        
             <td>
         <?php echo $this->Form->input('realizou_atendimento_psicologico', array('options' => array(1 => 'sim', 0 =>'não')));?>
     </fieldset>

@@ -54,6 +54,8 @@
     </ul>
 </nav>
 <?php } ?>
+<?php echo $usuario['Usuario']['imagem']; ?>
+<?php echo $this->Html->image('\usuarios'.$usuario['Usuario']['imagem']); ?>
 <?php //echo debug($usuario); ?>
 <table>
     <tr>
@@ -74,7 +76,7 @@
         <th>Sexo</th>
         <td>
             <?php if($usuario['Usuario']['realizou_atendimento_psicologico'] === 'f'){?>
-            <?php echo 'femino'; ?>
+            <?php echo 'feminino'; ?>
             <?php }else{
                 echo 'masculino';
             } ?>
@@ -231,3 +233,15 @@ if($upsi == 0){
 
 </table>
 <?php } ?>
+    <?php if($upsi == 0){ ?>
+    <table>
+        <tr>
+            <td>
+                <?php echo $this->Form->create('Usuario', array('enctype' => 'multipart/form-data')); ?>
+                <?php echo $this->Form->input('upload', array('type' => 'file')); ?>
+                <?php echo $this->Form->end(__('Submit')); ?>
+            </td>
+        </tr>
+    </table>
+    <?php } ?>
+    <?php echo $this->Html->image('/img/usuarios/' . $usuario['Usuario']['id'] . '.png', array('width'=>'200px')); ?>
