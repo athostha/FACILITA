@@ -72,7 +72,7 @@ class DATABASE_CONFIG {
 		'host' => 'localhost',
 		'login' => 'root',
 		'password' => '',
-		'database' => 'atendimento_psicologico',
+		'database' => 'facilita',
 		'prefix' => '',
 		'encoding' => 'utf8',
 	);

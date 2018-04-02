@@ -10,8 +10,20 @@ class MensagensController extends AppController{
         parent::beforeFilter();
         $this->Auth->deny();
     }
-    
-    public function novamensagem($solicitacaoid){
+    public function beforeRender(){
+        $this->set('agendados', $this->Mensagem->Solicitacao->Agendamento->find('all', 
+                array('conditions'=>array('Agendamento.usuario_id'=> $this->Auth->user('id'),
+                    'Agendamento.finalizado' => 0)
+                )));
+        $this->set('contagendamentos', $this->Mensagem->Solicitacao->Agendamento->find('count', 
+                array('conditions'=>array(array('Agendamento.finalizado' => 0,'Agendamento.usuario_id'=> $this->Auth->user('id')))
+                )));
+        $this->set('alertamensagens', $this->Mensagem->find('all', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+        $this->set('countalertamensagens', $this->Mensagem->find('count', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+    }
+    public function atendimento($solicitacaoid){
         //exibe solicitacao selecionada
         $solicitacoes = $this->Mensagem->Solicitacao->find('all');
         foreach ($solicitacoes as $solicitacao):
@@ -25,7 +37,7 @@ class MensagensController extends AppController{
         $this->Mensagem->solicitacao_id = $solicitacaoid;
         $this->set('mensagens', $this->Mensagem->find('all',
             array('conditions' => array('solicitacao_id' => $solicitacaoid),
-                'order' => array('Mensagem.id' => 'desc'))));
+                'order' => array('Mensagem.id' => 'asc'))));
         
 
         
@@ -60,7 +72,7 @@ class MensagensController extends AppController{
                 if ($this->Mensagem->save($this->request->data)) {
                     $this->Flash->success(__('Mensagem Registrada'));
                     return $this->redirect(array('controller' => 'Mensagens' ,
-                        'action' => 'novamensagem', $solicitacaoid));
+                        'action' => 'atendimento', $solicitacaoid));
                 }
             }
             
@@ -70,21 +82,21 @@ class MensagensController extends AppController{
             if($this->request->data('Agendar')){
                 $data = $this->request->data['Agendar']['dia'];
                 $hora = $this->request->data['Agendar']['hora'];
+                echo debug($this->request->data);
                 if(strlen($data) == 10){
-                    $ano = substr($data, -4);
-                    $mes = substr($data, -7, 2);
-                    $dia = substr($data, -10, 2);
-                    $end = $ano."-".$mes."-".$dia." ".$hora['hour'].":".$hora['min'].":00";
+                    $end = $data." ".$hora.":00";
                     //echo debug($data);
-                    //echo debug($end);
+                    echo debug($end);
 
                     $this->request->data['Agendamento']['data'] = $end;
                     $this->request->data['Agendamento']['solicitacao_id'] = $solicitacaoid;
                     $this->request->data['Agendamento']['usuario_id'] = $solicita['Solicitacao']['usuario_id'];
+                    $this->request->data['Agendamento']['local'] = $this->request->data['Agendar']['local'];
+                    echo debug($this->request->data);
                     if ($this->Mensagem->Solicitacao->Agendamento->save($this->request->data)){
                         $this->Flash->success(__('Data Agendada'));
                         return $this->redirect(array('controller' => 'Mensagens',
-                            'action' => 'novamensagem', $solicitacaoid));
+                            'action' => 'atendimento', $solicitacaoid));
                     }else{
                         $this->Flash->error(__('Data incorreta'));
                     }
@@ -96,7 +108,7 @@ class MensagensController extends AppController{
         }
     }
         
-    public function mensagemsalva($solicitacaoid){
+    public function atendimentofinalizado($solicitacaoid){
         //exibe solicitacao selecionada
         $solicitacoes = $this->Mensagem->Solicitacao->find('all');
         foreach ($solicitacoes as $solicitacao):

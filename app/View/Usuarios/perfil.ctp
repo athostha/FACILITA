@@ -1,247 +1,156 @@
-<?php $upsi = $this->Session->read('Auth.User.psicologo'); ?>
-<?php //debug($upsi); ?>
-<?php if($upsi == 1){ ?>
-<nav>
-    <ul>
-        <li><?php echo $this->Html->link(
-        'Página inicial',
-        array('controller' => 'solicitacoes', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver Solicitações',
-        array('controller' => 'Solicitacoes', 'action' => 'vispsicologo')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver dados',
-        array('controller' => 'Solicitacoes', 'action' => 'dados')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Atendimentos agendados',
-        array('controller' => 'Agendamentos', 'action' => 'visagendamentos')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Gerenciamento de Usuários',
-            array('controller' => 'usuarios', 'action' => 'vis', 'new')
-); ?></li>
-         <li><?php echo $this->Html->link(
-        'Gerenciamento de motivos',
-            array('controller' => 'motivos', 'action' => 'gerenciarmotivos')
-);       ?></li>
-        <li><?php echo $this->Html->link(
-        'log out',
-            array('controller' => 'usuarios', 'action' => 'logout')
-); ?></li>
-    </ul>
-</nav>
-<?php }; ?>
-
-<?php if($upsi == 0){ ?>
-<nav>
-    <ul>
-		<li><?php echo $this->Html->link(
-        'Página inicial',
-        array('controller' => 'solicitacoes', 'action' => 'index')); ?></li>
-		<li>
-        <?php
-                echo $this->Html->link(
-                    'Ver perfil',
-                    array('controller' => 'Usuarios', 'action' => 'perfil', $this->Session->read('Auth.User.id'))
-                );
-        ?></li>
-        <li><?php echo $this->Html->link(
-        'log out',
-            array('controller' => 'usuarios', 'action' => 'logout')
-); ?></li>
-    </ul>
-</nav>
-<?php } ?>
-<?php echo $usuario['Usuario']['imagem']; ?>
-<?php echo $this->Html->image('\usuarios'.$usuario['Usuario']['imagem']); ?>
-<?php //echo debug($usuario); ?>
-<table>
-    <tr>
-        <th>Nome</th>
-        <td><?php echo $usuario['Usuario']['nome']; ?></td>
-    </tr>
-    <tr>
-        <th>Matrícula</th>
-        <td><?php echo $usuario['Usuario']['matricula']; ?></td>
-    </tr>
-    <tr>
-        <th>Data de nascimento</th>
-        <td><?php 
-        $data = new DateTime($usuario['Usuario']['data_nascimento']);
-        echo $data->format('d/m/Y'); ?>
-    </tr>
-    <tr>
-        <th>Sexo</th>
-        <td>
-            <?php if($usuario['Usuario']['realizou_atendimento_psicologico'] === 'f'){?>
-            <?php echo 'feminino'; ?>
-            <?php }else{
-                echo 'masculino';
-            } ?>
-        </td>
-    </tr>
-    <tr>
-        <th>email</th>
-        <td><?php echo $usuario['Usuario']['email']; ?></td>
-    </tr>
-    <tr>
-        <th>telefone</th>
-        <td><?php echo $usuario['Usuario']['telefone']; ?></td>
-    </tr>
-    <tr>
-        <th>Estado Civil</th>
-        <td><?php echo $usuario['Usuario']['estado_civil']; ?></td>
-    </tr>
-    <tr>
-        <th>setor</th>
-        <td><?php echo $usuario['Usuario']['setor']; ?></td>
-    </tr>
-    <tr>
-        <th>Cargo</th>
-        <td><?php echo $usuario['Usuario']['cargo']; ?></td>
-    </tr>
-    <tr>
-        <th>Já realizou atendimento psicológico</th>
-        <td>
-            <?php if($usuario['Usuario']['realizou_atendimento_psicologico'] == 1){?>
-            <?php echo 'Sim'; ?>
-            <?php }else{
-                echo 'não';
-            } ?>
-        </td>
-    </tr>
-</table>
-
-<?php $upsi = $this->Session->read('Auth.User.psicologo');
-if($upsi == 0){ 
-    echo $this->Html->link(
-                    'Mudar Senha',
-                    array('controller' => 'Usuarios', 'action' => 'novasenha', $this->Session->read('Auth.User.id'))
-                );
-}?>
-
-
-<?php if($upsi == 1){ ?>
-<table>
-    <tr>
-        <th>Data</th>
-        <th>Comentário</th>
-        <th>Presença</th>
-    </tr>
-        <?php
-        //echo debug($agendamentos);
-            foreach($agendamentos as $agendamento):
-                $date = new DateTime($agendamento['Agendamento']['data']);
-                $date = $date->format('d/m/Y H:i:s');
-        ?>
-            <tr>
-                <td><?php echo $date; ?></td>
-                <td><?php echo $agendamento['Agendamento']['comentario']; ?> </td>
-                <td><?php if($agendamento['Agendamento']['finalizado'] == 1){
-                    if($agendamento['Agendamento']['comparecimento'] == 1){
-                        echo "compareceu";
-                    }else{
-                        echo "Faltou";
-                    }
-                }else{
-                    echo 'Não realizada';
-                }
-                        ; ?></td>
-        <?php
-            endforeach;
-        ?>
-    
-</table>
-<table>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>descricao</th>
-        <th>Nova mensagem</th>
-        <th>motivos</th>
-        <th>Fechar solicitação</th>
-<!--        <th>debug</th> -->
-    </tr>
-<?php foreach ($solicitacoes as $solicitacao): ?>
-    <tr>
-        <td>
-            <?php
-            if($solicitacao['Solicitacao']['fechado'] == 0){
-                echo $this->Html->link(
-                    $solicitacao['Solicitacao']['id'],
-                    array('controller' => 'Mensagens',
-                        'action' => 'novamensagem', $solicitacao['Solicitacao']['id']));
-            }else{
-                echo $this->Html->link(
-                    $solicitacao['Solicitacao']['id'],
-                    array('controller' => 'Mensagens',
-                        'action' => 'mensagemsalva', $solicitacao['Solicitacao']['id']));
-            }
-            ?>
-        </td>
-        
-        <td><?php echo $solicitacao['Solicitacao']['descricao']; ?></td>
-                
-        <td>
-            
-            <?php
-            //debug($solicitacao['Mensagem']);
-                foreach ($solicitacao['Mensagem'] as $primeiramensagem):
-                endforeach;
-                
-                //echo debug($primeiramensagem);
-                if(isset($primeiramensagem)){
-                if(($primeiramensagem['lido'] == 0)
-                    &&($primeiramensagem['usuario_id'] !== $this->Session->read('Auth.User.id'))){
-                    echo "sim";
-                }else{
-                    echo "não";
-                }}else{
-                    echo "não";
-                }
-                $primeiramensagem = null;
-                ?>
-        <td>
-            <?php $mot = null ?>
-            <?php foreach ($solicitacao['Motivo'] as $mot): ?>
-            <?php if(isset($mut)){ echo ',';} ?>
-            <?php echo $mot['motivo']; ?>
-            <?php $mut = $mot['motivo']; ?>
-            <?php endforeach; ?>
-            <?php if($solicitacao['Solicitacao']['motivo_outros'] !== '' && isset($mot['motivo'])){ ?><?php echo ', ' ?><?php } ?>
-            <?php $mut = null ?>
-            <?php echo $solicitacao['Solicitacao']['motivo_outros']; ?>
-        </td>
-        <td>
-        <?php
-            if($solicitacao['Solicitacao']['fechado'] == 0){
-                echo $this->Form->postLink(
-                    'Fechar Solicitação',
-                    array('action' => 'fecharsolicitacao', $solicitacao['Solicitacao']['id']),
-                    array('confirm' => 'Are you sure?')
-                );
-            }else{
-                echo 'Solicitação Fechada';
-            }
-        ?>
-        </td>
-<!--        <td><?php //debug($mot); ?></td> -->
-    </tr>
-<?php endforeach; ?>
-
-</table>
-<?php } ?>
-    <?php if($upsi == 0){ ?>
-    <table>
-        <tr>
-            <td>
-                <?php echo $this->Form->create('Usuario', array('enctype' => 'multipart/form-data')); ?>
+<body class="fix-header fix-sidebar card-no-border">
+    <div id="main-wrapper">
+        <div>
+           <div class="container-fluid">
+<div class="row">
+                    <div class="col-12">
+                      <div class="card">
+                            <div class="card-block">
+                                    <div class="form-body">
+                                        <h3 class="card-title">Dados Pessoais</h3>
+                                        <hr>
+<?php echo $this->Form->create('Usuario'); ?>
+<div class="row p-t-20">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Nome</label>
+        <?php echo $this->Form->input('nome', array('label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Data de Nascimento</label>
+        <?php echo $this->Form->date('data_nascimento', array( 'label' => '', 
+            'dateFormat' => 'DMY', 
+            'minYear' => date('Y') - 70,
+            'maxYear' => date('Y') - 18,
+                'class'=>'form-control')); ?> 
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Estado Civil</label>
+        <?php echo $this->Form->input('estado_civil',array('label' => '','class'=>'form-control','options' => array('solteiro' => 'solteiro',
+            'casado' => 'casado', 'viuvo' => 'viúvo'))); ?>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Sexo</label>
+        <?php echo $this->Form->input('sexo', array('options' => array('m' => 'masculino',
+            'f' => 'feminino'),'label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+</div>
+<div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Email</label>
+                                    <div class="input-group">
+            <div class="input-group-addon"><i class="ti-email"></i></div>
+        <?php echo $this->Form->email('email', array('label' => '','class'=>'form-control', 'id'=>'exampleInputEmail1')); ?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Telefone</label>
+        <?php echo $this->Form->input('telefone',array('label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+</div>
+<h3 class="box-title m-t-40">Dados Funcionais</h3>
+<hr>
+<div class="row p-t-20">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Matricula</label>
+        <?php echo $this->Form->input('matricula',array('label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Cargo</label>
+        <?php echo $this->Form->input('cargo',array('label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Setor</label>
+        <?php echo $this->Form->input('setor',array('label' => '','class'=>'form-control')); ?>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Já realizou atendimento psicológico?</label>
+        <?php echo $this->Form->input('realizou_atendimento_psicologico', array('options' => array(1 => 'sim', 0 =>'não'),'label' => '','class'=>'form-control'));?>
+        </div>
+    </div>
+</div>
+<div class="form-actions">
+<?php echo $this->Form->button('<i class="fa fa-check"></i> Salvar', array('type'=>'submit', 'class'=>'btn btn-info')); ?>
+<?php echo $this->Form->end(); ?>
+<a href="/facilita/Solicitacoes/index" class="btn btn-inverse waves-effect waves-light"><i class="fa fa-times"></i> Cancelar</a>
+</div>
+</div>
+</div>   
+</div>
+                      <div class="card">
+                            <div class="card-block">
+                                    <div class="form-body">
+                                        
+                                        <h3 class="card-title">Mudar Senha</h3>
+                                        <hr>
+    <?php echo $this->Form->create('Usuario'); ?>
+ <div class="row">
+                         <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="pwd1">Senha</label>
+<?php echo $this->Form->input('senha', array(
+            'type' => 'password','label' => '','class'=>'form-control')); ?>
+                            </div>
+                        </div>
+                        <!--/span-->
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="pwd2">Confirmar Senha</label>
+<?php echo $this->Form->input('confirm_password',array(
+            'type'  =>  'password','label' => '','class'=>'form-control')); ?>
+                                </div>
+                            </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                </div>
+                            </div>
+ </div>
+<div class="form-actions">
+<?php echo $this->Form->button('Salvar', array('type'=>'submit', 'class'=>'btn btn-info')); ?>
+<?php echo $this->Form->end(); ?>
+</div>
+</div>
+</div>
+    <div class="card-body"><h3 class="card-title">Mudar Foto</h3>
+        <hr><div class="row">
+                         <div class="col-md-4">
+                             <div class="form-group"><?php echo $this->Form->create('Usuario', array('type'=>'post','enctype' => 'multipart/form-data')); ?>
                 <?php echo $this->Form->input('upload', array('type' => 'file')); ?>
-                <?php echo $this->Form->end(__('Submit')); ?>
-            </td>
-        </tr>
-    </table>
-    <?php } ?>
-    <?php echo $this->Html->image('/img/usuarios/' . $usuario['Usuario']['id'] . '.png', array('width'=>'200px')); ?>
+                         </div>
+        </div><div class="col-md-4">
+                             <div class="form-group">
+                <?php echo $this->Form->button('Salvar', array('type'=>'submit', 'class'=>'btn btn-info')); ?>
+                <?php echo $this->Form->end(); ?>
+                             </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>
+</div>
+</div>   
+</div>                        
+</div>
+</body>

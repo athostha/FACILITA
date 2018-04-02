@@ -67,7 +67,7 @@ class AppController extends Controller {
         if ($this->action === 'index') {
         return true;
         }
-        if ($this->action === 'novamensagem') {
+        if ($this->action === 'atendimento') {
             $usuario = $this->Session->read('Auth.User.id');
             $sid = (int) $this->request->params['pass'][0];
             $sol = $this->Mensagem->Solicitacao->find('first',
@@ -78,32 +78,40 @@ class AppController extends Controller {
                     return true;
             }
         }
-        if ($this->action === 'visagendamentos') {
+        if ($this->action === 'agendamentos') {
             if($admin == 1){
                 return true;
+            }else{
+                return false;
             }
         }
-        if ($this->action === 'mensagemsalva') {
+        if ($this->action === 'atendimentofinalizado') {
             if($admin == 1){
                 return true;
+            }else{
+                return false;
             }
         }
         if ($this->action === 'gerenciarmotivos') {
             if($admin == 1){
                 return true;
+            }else{
+                return false;
             }
         }
         if ($this->action === 'dados') {
             if($admin == 1){
                 return true;
+            }else{
+                return false;
             }
         }
-        if ($this->action === 'vispsicologo') {
+        if ($this->action === 'atendimentos') {
             if($admin == 1){
                 return true;
             }
         }
-        if ($this->action === 'solicita') {
+        if ($this->action === 'novoatendimento') {
             if($admin == 0){
                 return true;
             }
@@ -113,17 +121,12 @@ class AppController extends Controller {
                 return true;
             }
         }
-        if ($this->action === 'editar') {
-            if($admin == 1){
-                return true;
-            }
-        }
         if ($this->action === 'registropsicologo') {
         if($admin == 1){
                 return true;
             }
         }
-        if ($this->action === 'vis') {
+        if ($this->action === 'usuarios') {
         if($admin == 1){
                 return true;
             }
@@ -131,6 +134,18 @@ class AppController extends Controller {
         if ($this->action === 'perfil') {
         if($admin == 1){
                 return true;
+            }
+        }if ($this->action === 'delete') {
+        if($admin == 1){
+                return true;
+            }else{
+                return false;
+            }
+        }if ($this->action === 'perfilpsicologo') {
+        if($admin == 1){
+                return true;
+            }else{
+                return false;
             }
         }
         $usuario = $this->Session->read('Auth.User.id');

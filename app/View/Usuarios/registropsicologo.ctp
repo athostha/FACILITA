@@ -12,8 +12,8 @@
             'dateFormat' => 'DMY', 
             'minYear' => date('Y') - 70,
             'maxYear' => date('Y') - 18 ));
-        echo $this->Form->input('estado_civil', array('options' => array('solteiro' => 'solteiro',
-            'casado' => 'casado', 'viuvo' => 'viuvo')));
+        echo $this->Form->input('estado_civil', array('options' => array('solteiro' => 'solteira(o)',
+            'casado' => 'casada(o)', 'viuvo' => 'viuva(o)')));
         echo $this->Form->input('setor');
         echo $this->Form->input('cargo');
         echo $this->Form->input('realizou_atendimento_psicologico', array('options' => array(1 => 'sim', 0 =>'não')));

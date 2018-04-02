@@ -15,7 +15,19 @@ class MotivosController extends AppController{
 			return true;
 		}
 	}
-			
+    public function beforeRender(){
+        $this->set('agendados', $this->Motivo->Solicitacao->Agendamento->find('all', 
+                array('conditions'=>array('Agendamento.usuario_id'=> $this->Auth->user('id'),
+                    'Agendamento.finalizado' => 0)
+                )));
+        $this->set('contagendamentos', $this->Motivo->Solicitacao->Agendamento->find('count', 
+                array('conditions'=>array(array('Agendamento.finalizado' => 0,'Agendamento.usuario_id'=> $this->Auth->user('id')))
+                )));
+        $this->set('alertamensagens', $this->Motivo->Solicitacao->Mensagem->find('all', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+        $this->set('countalertamensagens', $this->Motivo->Solicitacao->Mensagem->find('count', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+    }
     public function gerenciarmotivos(){
         if ($this->request->is('post')) {
             if ($this->Motivo->save($this->request->data)) {

@@ -17,35 +17,58 @@ class SolicitacoesController extends AppController{
             $this->Auth->deny();
         }
     }
-    
-
+    public function beforeRender(){
+        $this->set('agendados', $this->Solicitacao->Agendamento->find('all', 
+                array('conditions'=>array('Agendamento.usuario_id'=> $this->Auth->user('id'),
+                    'Agendamento.finalizado' => 0)
+                )));
+        $this->set('contagendamentos', $this->Solicitacao->Agendamento->find('count', 
+                array('conditions'=>array(array('Agendamento.finalizado' => 0, 'Agendamento.usuario_id'=>$this->Auth->user('id')))
+                )));
+        $this->set('alertamensagens', $this->Solicitacao->Mensagem->find('all', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+        $this->set('countalertamensagens', $this->Solicitacao->Mensagem->find('count', array('conditions' => array('Solicitacao.usuario_id'=> $this->Auth->user('id'),
+            'Mensagem.usuario_id !='=> $this->Auth->user('id'), 'Mensagem.lido' => 0, 'Solicitacao.fechado'=>0))));
+    }
     public function index(){
-        $this->set('motivos', $this->Solicitacao->Motivo->find('all'));
-        
-        if ($this->request->is('post')) {
-            $this->request->data['Solicitacao']['fechado'] = 0;
-            $this->request->data['Solicitacao']['usuario_id'] = $this->Auth->user('id');
-            if ($this->Solicitacao->saveAll($this->request->data,array('deep' => true))) {
-                $this->Flash->success(__('Solicitação Registrada'));
-                return $this->redirect(array('controller' => 'Solicitacoes' ,
-                    'action' => 'index'));
-            }
-        }
         $this->set('solicitacoes', $this->Solicitacao->find('all', 
                 array('conditions'=>array('usuario_id'=> $this->Auth->user('id'),
                     'Solicitacao.fechado' => 0),
                 'order' => array('Solicitacao.id' => 'desc')
                 )));
+         $this->set('atendimento', $this->Solicitacao->find('count', 
+                array('conditions'=>array(array('Solicitacao.fechado' => 0)
+                ))));
+         $this->set('finalizado', $this->Solicitacao->find('count', 
+                array('conditions'=>array(array('Solicitacao.fechado' => 1))
+                )));
+         $this->set('agendado', $this->Solicitacao->Agendamento->find('count', 
+                array('conditions'=>array(array('Agendamento.finalizado' => 0))
+                )));
+         $options['fields'] = array('DISTINCT (Solicitacao.id)');
+         $options['joins'] = array(
+            array('table' => 'mensagens',
+            'alias' => 'Mensagem',
+            'type' => 'INNER',
+            'conditions' => array(
+                'Mensagem.lido' => 0,
+                'Mensagem.solicitacao_id = Solicitacao.id',
+                'Mensagem.usuario_id !=' => $this->Auth->user('id')
+            )));
+         $options['conditions'] = array('Solicitacao.fechado' => 0);
+         $this->recursive = -1;
+         $this->set('aguardando', $this->Solicitacao->find('count', $options));
+         
     }
      public $components = array('Paginator');
 
     public $paginate = array(
-        'limit' => 10,
+        'maxLimit' => 10,
         'order' => array(
             'Solicitacao.id' => 'desc'
         )
     );  
-    public function vispsicologo(){
+    public function atendimentos(){
         //$this->set('solicitacoes', $this->Solicitacao->find('all',
         //        array('order' => array('Solicitacao.id' => 'desc'),
         //            'conditions' => array('Solicitacao.fechado' => 0))));
@@ -65,16 +88,35 @@ class SolicitacoesController extends AppController{
                 array('order' => array('Solicitacao.id' => 'desc'))));
     }
     
-    public function solicita() {
+    public function novoatendimento() {
         $this->set('motivos', $this->Solicitacao->Motivo->find('all'));
         
         if ($this->request->is('post')) {
             $this->request->data['Solicitacao']['fechado'] = 0;
             $this->request->data['Solicitacao']['usuario_id'] = $this->Auth->user('id');
-            if ($this->Solicitacao->saveAll($this->request->data,array('deep' => true))) {
-                $this->Flash->success(__('Solicitação Registrada'));
-                return $this->redirect(array('controller' => 'Solicitacoes' ,
-                    'action' => 'solicita'));
+            if($this->request->data['Solicitacao']['Motivos'] != NULL){
+                    $this->request->data['Motivo']['Motivo'] = $this->request->data['Solicitacao']['Motivos'];
+                if ($this->Solicitacao->saveAll($this->request->data,array('deep' => true))) {
+                    $this->Flash->success(__('Solicitação Registrada'));
+                    return $this->redirect(array('controller' => 'Solicitacoes' ,
+                        'action' => 'index'));
+                }
+            }else{
+                if($this->request->data['Solicitacao']['motivo_outros'] != NULL){
+                    if ($this->Solicitacao->saveAll($this->request->data,array('deep' => true))) {
+                    $this->Flash->success(__('Solicitação Registrada'));
+                    return $this->redirect(array('controller' => 'Solicitacoes' ,
+                        'action' => 'index'));
+                }
+                }
+                echo "<script>
+                    alert('Você deve escolher pelo menos um motivo');
+                    window.location.href='1';
+                    </script>";
+                if($this->request->data['Solicitacao']['Motivos'] == NULL){
+                    return $this->redirect(array('controller' => 'Solicitacoes' ,
+                        'action' => 'novoatendimento'));
+                }
             }
         }  
     }
@@ -84,7 +126,7 @@ class SolicitacoesController extends AppController{
         if($this->Solicitacao->updateAll(array("Solicitacao.fechado" => 1),
                     array("Solicitacao.id" => $id))){
             $this->Flash->success(__('Solicitação finalizada'));
-            return $this->redirect(array('action' => 'vispsicologo'));
+            return $this->redirect(array('action' => 'atendimentos'));
         }
     }
     

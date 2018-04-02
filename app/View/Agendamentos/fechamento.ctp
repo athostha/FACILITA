@@ -1,41 +1,52 @@
-<nav>
-    <ul>
-        <li><?php echo $this->Html->link(
-        'Página inicial',
-        array('controller' => 'solicitacoes', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver Solicitações',
-        array('controller' => 'Solicitacoes', 'action' => 'vispsicologo')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver dados',
-        array('controller' => 'Solicitacoes', 'action' => 'dados')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Atendimentos agendados',
-        array('controller' => 'Agendamentos', 'action' => 'visagendamentos')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Gerenciamento de Usuários',
-            array('controller' => 'usuarios', 'action' => 'vis', 'new')
-); ?></li>
-         <li><?php echo $this->Html->link(
-        'Gerenciamento de motivos',
-            array('controller' => 'motivos', 'action' => 'gerenciarmotivos')
-);       ?></li>
-        <li><?php echo $this->Html->link(
-        'log out',
-            array('controller' => 'usuarios', 'action' => 'logout')
-); ?></li>
-    </ul>
-</nav>
-<?php 
-echo $this->Form->create('Agendamento', array(
+<body class="fix-header fix-sidebar card-no-border">
+    <div id="main-wrapper">
+<div>
+<div class="container-fluid">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="form-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <h4 class="modal-title">Finalizar Agendamento</h4>
+<?php echo $this->Form->create('Agendamento', array(
     'onsubmit' => "return confirm(\"Are you sure?\");",
     'label' => 'Fechar Agendamento'
-));
-?>
-<?php echo $this->Form->input('comentario', array('rows' => 3)); ?>
-<?php echo $this->Form->input('comparecimento', array('options' => array(1 => 'compareceu', 0 =>'faltou'),
-    'label' => 'Presença'));?>
-<?php echo $this->Form->end(__('Finalizar')); ?>
+)); ?>
+                                                </div>
+                                            <div class="modal-body">
+                                                    <div class="form-group">
+                                                      <label class="control-label">Comentário</label>
+                                                      <?php echo $this->Form->input('comentario', array('label' => '','rows' => 3, 'class' =>'form-control')); ?>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">Presença</label>
+                                                        <?php echo $this->Form->input('comparecimento', array('label' => '','options' => array(1 => 'compareceu', 0 =>'faltou'), 'class' =>'form-control'));?>
+                                                    </div>
+<!--
+                                                    <div class="form-group">
+                                                        <label class="control-label">Local:</label>
+                                                        <input type="text" class="form-control" id="local">
+                                                    </div> -->
+                                                
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                <?php echo $this->Form->button('Finalizar', array('type'=>'submit', 'class'=>'btn btn-primary')); ?>
+                                                <?php echo $this->Form->end();?>
+                        </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>

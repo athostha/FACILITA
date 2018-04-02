@@ -1,35 +1,8 @@
-<nav>
-    <ul>
-        <li><?php echo $this->Html->link(
-        'Página inicial',
-        array('controller' => 'solicitacoes', 'action' => 'index')); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver Solicitações',
-        array('controller' => 'Solicitacoes', 'action' => 'vispsicologo')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Ver dados',
-        array('controller' => 'Solicitacoes', 'action' => 'dados')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Atendimentos agendados',
-        array('controller' => 'Agendamentos', 'action' => 'visagendamentos')
-); ?></li>
-        <li><?php echo $this->Html->link(
-        'Gerenciamento de Usuários',
-            array('controller' => 'usuarios', 'action' => 'vis', 'new')
-); ?></li>
-         <li><?php echo $this->Html->link(
-        'Gerenciamento de motivos',
-            array('controller' => 'motivos', 'action' => 'gerenciarmotivos')
-);       ?></li>
-        <li><?php echo $this->Html->link(
-        'log out',
-            array('controller' => 'usuarios', 'action' => 'logout')
-); ?></li>
-    </ul>
-</nav>
-<?php
+
+
+
+
+<?php /*
     echo $this->Form->create('Busca');
     echo $this->Form->input('begin', array(
         'type' => 'date',
@@ -85,7 +58,7 @@
                 echo $this->Html->link(
                     $solicitacao['Solicitacao']['id'],
                     array('controller' => 'Mensagens',
-                        'action' => 'mensagemsalva', $solicitacao['Solicitacao']['id']));
+                        'action' => 'atendimentofinalizado', $solicitacao['Solicitacao']['id']));
             ?>
         </td>
         <td><?php echo $solicitacao['Solicitacao']['descricao']; ?></td>
@@ -108,4 +81,4 @@
 <?php endforeach; }?>
 
 </table>
-        
+        */
