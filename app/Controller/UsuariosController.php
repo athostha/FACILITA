@@ -133,7 +133,7 @@ class UsuariosController extends AppController{
             $this->set('usuarios', $posts);
         }
         
-        //Se o formulário for enviado
+        //Se o formulário de busca for enviado
         if($this->request->is('post')){
             
             //Salvando os dados do formulário na sessão

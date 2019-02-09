@@ -12,7 +12,7 @@
                                                 <div class="form-group">
                                                     <h4 class="modal-title">Finalizar Agendamento</h4>
 <?php echo $this->Form->create('Agendamento', array(
-    'onsubmit' => "return confirm(\"Are you sure?\");",
+    'onsubmit' => "return confirm(\"Você realmente deseja finalizar este agendamento?\");",
     'label' => 'Fechar Agendamento'
 )); ?>
                                                 </div>

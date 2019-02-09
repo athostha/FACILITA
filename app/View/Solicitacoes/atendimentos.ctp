@@ -30,14 +30,14 @@
             <a href="#" data-toggle="tooltip" data-original-title="Finalizar"><?php
             if($solicitacao['Solicitacao']['fechado'] == 0){
                 echo $this->Form->postLink(
-                    $this->Html->tag('i', '', array('class' => 'mdi mdi-message-bulleted-off text-inverse','data-original-title'=>'Finalizar')),
+                    $this->Html->tag('i', '', array('class' => 'mdi mdi-message-bulleted-off text-inverse','data-original-title'=>'Finalizar', 'title' => 'Finalizar Atendimento')),
                         array('action' => 'fecharsolicitacao', $solicitacao['Solicitacao']['id']),
                         array('escape'=>false),
-                        __('Are you sure?'),
+                        __('Você realmente deseja finalizar este atendimento?'),
                        array('class' => 'btn btn-mini')
                         );
             }else{
-                echo 'Solicitação Fechada';
+                echo '';
             }
             ?></a>
         </td>
@@ -49,7 +49,10 @@
                     array('controller' => 'Mensagens',
                         'action' => 'atendimento', $solicitacao['Solicitacao']['id']));
             }else{
-                echo $solicitacao['Solicitacao']['id'];
+                echo $this->Html->link(
+                    '#0'.$solicitacao['Solicitacao']['id'],
+                    array('controller' => 'Mensagens',
+                        'action' => 'atendimentofinalizado', $solicitacao['Solicitacao']['id']));
             }
             ?>
         </td>
@@ -79,21 +82,24 @@
                 endforeach;
                 foreach ($solicitacao['Agendamento'] as $primeiroagendamento):
                 endforeach;
+                //echo debug($solicitacao);
                 //echo debug($primeiramensagem);
-                if((isset($primeiroagendamento)) && ($primeiroagendamento['finalizado'] == 0)){
-                    ?><span class="label label-table label-<?php echo "success" ?>"><?php    echo "Agendado";
+                if($solicitacao['Solicitacao']['fechado'] == 1){
+                    ?><span class="label label-table label-<?php echo "info" ?>"><?php    echo "Finalizado";
+                }else if((isset($primeiroagendamento)) && ($primeiroagendamento['finalizado'] == 0)){
+                    ?><span class="label label-table label-<?php echo "warning" ?>"><?php    echo "Agendado";
                 }else{
                 if(isset($primeiramensagem)){
                 if(($primeiramensagem['lido'] == 0)&&($primeiramensagem['usuario_id'] !== $this->Session->read('Auth.User.id'))){
-                ?><span class="label label-table label-<?php echo "warning" ?>"><?php    echo "Nova mensagem";
+                ?><span class="label label-table label-<?php echo "danger" ?>"><?php    echo "Nova mensagem";
                 }else{
                 ?><?php if($primeiramensagem['usuario_id'] !== $this->Session->read('Auth.User.id')){ ?>
-                    <span class="label label-table label-<?php echo "warning" ?>"><?php    echo "Aguardando resposta";
+                    <span class="label label-table label-<?php echo "danger" ?>"><?php    echo "Aguardando resposta";
                 }else{
                 ?> <span class="label label-table label-<?php echo "info" ?>"><?php    echo "Não há Novas Mensagens";
                 }
                 }}else{
-                ?><span class="label label-table label-<?php echo "primary" ?>"><?php    echo "Nova Solicitação";
+                ?><span class="label label-table label-<?php echo "danger" ?>"><?php    echo "Nova Solicitação";
                 }}
                 $primeiramensagem = null;
                 $primeiroagendamento = null;
@@ -115,4 +121,41 @@
          
         </div>
 </div>
+</body>
+
+<div class="modal fade" id="modalAgenda" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="exampleModalLabel1">Buscar Atendimento</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <?php echo $this->Form->create('buscar'); ?>
+                                                      <label class="control-label">Data</label>
+                                                      <p>Início</p>
+                                                      <?php echo $this->Form->date('diade',array('type' => 'date',
+                                                          'class' => 'form-control')); ?>
+                                                      <p>Fim</p>
+                                                      <?php echo $this->Form->date('diate',array('type' => 'date',
+                                                          'class' => 'form-control')); ?>
+                                                    </div>
+                                                    <div class="form-group">
+                                                      <label class="control-label">Matrícula</label>
+                                                          <?php echo $this->Form->input('Matricula', array('label' => '','class'=>'form-control')); ?>
+                                                    </div>
+                                                    <div class="form-group">
+                                                      <label class="control-label">Status</label>
+                                                          <?php echo $this->Form->input('status', array('options' => array(2 => 'Todos', 1 => 'Finalizado', 0 =>'aberto'),'label' => '','class'=>'form-control'));?>
+                                                      </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                                <?php echo $this->Form->button('Buscar', array('type'=>'submit', 'class'=>'btn waves-effect waves-light btn-danger pull-right'));
+                                                echo $this->Form->end(); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 </body>

@@ -15,9 +15,13 @@ $(function () {
     $('.chat-list').slimScroll({
         position: 'right'
         , size: "5px"
-        , height: '100%'
+        , start: 'bottom'
         , color: '#dcdcdc'
      });
+
+      $(".chat-list").scroll(function() {
+        $("#scroll-info-value").val($(".chat-list").scrollBottom());
+      });
     
     var cht = function () {
             var topOffset = 445;

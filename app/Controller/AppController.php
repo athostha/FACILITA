@@ -64,6 +64,10 @@ class AppController extends Controller {
     public function isAuthorized() {
         // Admin can access every action
         $admin = $this->Session->read('Auth.User.admin');
+        if ($this->action === 'perfilpsicologo') {
+            $usuario = $this->Session->read('Auth.User.id');
+            $id = (int) $this->request->params['pass'][0];
+        }
         if ($this->action === 'index') {
         return true;
         }
@@ -142,12 +146,13 @@ class AppController extends Controller {
                 return false;
             }
         }if ($this->action === 'perfilpsicologo') {
-        if($admin == 1){
+        if($admin == 1 && ($usuario == $id)){
                 return true;
             }else{
                 return false;
             }
         }
+        
         $usuario = $this->Session->read('Auth.User.id');
         $id = (int) $this->request->params['pass'][0];
         if($usuario == $id){

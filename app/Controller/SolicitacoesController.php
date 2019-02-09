@@ -77,10 +77,34 @@ class SolicitacoesController extends AppController{
         $this->Paginator->settings = $this->paginate;
 
     // similar to findAll(), but fetches paged results
-        $posts = $this->Paginator->paginate('Solicitacao',
-                array('Solicitacao.fechado' => 0));
-        $this->set('solicitacoes', $posts);
         //echo debug($posts);
+        $config = array('Solicitacao.fechado' => 0);
+        if($this->request->is('post')){
+            $this->Session->write($this->request->data);
+            if($this->Session->check('buscar')){
+                if($this->Session->read('buscar.diade') != '' && $this->Session->read('buscar.diate') != ''){
+                    $data1 =  date($this->Session->read('buscar.diade'));
+                    $data2 =  date($this->Session->read('buscar.diate'));
+                    $config['Solicitacao.created BETWEEN ? and ?'] = array($data1, $data2);
+                }
+                if($this->Session->read('buscar.status') == 0){
+                    $config['Solicitacao.fechado'] = 0;
+                }else if($this->Session->read('buscar.status') == 1){
+                    $config['Solicitacao.fechado'] = 1;
+                }else{
+                    unset($config['Solicitacao.fechado']);
+                }
+                
+                if($this->Session->read('buscar.Matricula') != ''){
+                    $usr = $this->Solicitacao->Usuario->find('first', array('conditions' => array('matricula' => $this->Session->read('buscar.Matricula'))));
+                    $config['Solicitacao.usuario_id'] = $usr['Usuario']['id'];
+                }
+                //debug($config);
+            }
+        }
+        
+        $posts = $this->Paginator->paginate('Solicitacao', $config);
+        $this->set('solicitacoes', $posts);
     }
         public function visuser(){
         $this->set('solicitacoes', $this->Solicitacao->find('all', 

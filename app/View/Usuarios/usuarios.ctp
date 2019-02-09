@@ -34,7 +34,7 @@
                        array('class' => 'btn btn-mini')
                         ); */?>
             <?php echo $this->Html->link(
-                $this->Html->tag('i', '', array('class' => 'fa fa-pencil text-inverse m-l-5')),
+                $this->Html->tag('i', '', array('class' => 'fa fa-pencil text-inverse m-l-5', 'title' => 'Editar Usuário')),
                 array('action' => 'perfil', $usuario['Usuario']['id']),
                 array('escape' => false)
             ); ?>
@@ -86,6 +86,11 @@
                                                           <?php echo $this->Form->create('buscar', array('url' => array('controller' => 'usuarios', 'action' => 'usuarios')));
     
                                                           echo $this->Form->input('Nome', array('label' => '','class'=>'form-control')); ?>
+                                                      </div>
+                                                
+                                                    <div class="form-group">
+                                                      <label class="control-label">Matricula</label>
+                                                          <?php echo $this->Form->input('ss', array('options' => array(1 => 'Já realizei atendimento psicológico', 0 =>'Nunca realizei atendimento psicológico'),'label' => '','class'=>'form-control'));?>
                                                       </div>
                                                     <div class="form-group">
                                                       <label class="control-label">Matricula</label>

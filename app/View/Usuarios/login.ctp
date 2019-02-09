@@ -22,8 +22,7 @@
                         <div class="form-group">
                             <div class="col-xs-12">
                             <label class="control-label">Senha</label>
-    <?php    echo $this->Form->password('senha', array('class'=>'form-control', 'label'=>''));
-    ?>
+    <?php    echo $this->Form->password('senha', array('class'=>'form-control', 'label'=>''));?>
                             </div>
                         </div>
                         <div class="form-group text-center m-t-20">
@@ -65,7 +64,7 @@
           
     
     <!-- All Jquery -->
-    <?php include dirname(__FILE__)."/include/scripts.php"; ?>  
+    <?php include ROOT ."\app\View\Elements\scripts.ctp"; ?>  
 
     <script language="javascript">
         function check(form)/*function to check userid & password*/

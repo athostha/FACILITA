@@ -96,7 +96,7 @@
                                             ?>
                                         
                                             
-                                            <a href="..\Mensagens\atendimento\<?php echo $alertamensagem['Solicitacao']['id']; ?>">
+                                            <a href="\facilita\Mensagens\atendimento\<?php echo $alertamensagem['Solicitacao']['id']; ?>">
                                                 <div class="user-img"> <?php echo $this->Html->image('/img/usuarios/' . $alertamensagem['Usuario']['id'] . '.png', array('alt'=>'user', 'class'=>'img-circle')); ?> <span class="profile-status pull-right"></span> </div>
                                                 <div class="mail-contnet">
                                                     <h5><?php echo $alertamensagem['Usuario']['nome']; ?></h5> <span class="mail-desc">Respondeu seu atendimento!</span> <span class="time">às <?php echo $ahora; ?></span> </div>

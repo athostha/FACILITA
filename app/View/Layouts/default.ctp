@@ -76,6 +76,11 @@
     <div class="col-md-7 col-4 align-self-center">
     <button class="btn waves-effect waves-light btn-danger pull-right" type="button" data-toggle="modal" data-target="#modalAgenda" data-whatever="@agenda">
     Buscar Usuário</button></div>
+<?php } ?>      
+<?php if($this->params['action']=='atendimentos'){ ?>
+    <div class="col-md-7 col-4 align-self-center">
+    <button class="btn waves-effect waves-light btn-danger pull-right" type="button" data-toggle="modal" data-target="#modalAgenda" data-whatever="@agenda">
+    Buscar Atendimento</button></div>
 <?php } ?>
 
                 </div>

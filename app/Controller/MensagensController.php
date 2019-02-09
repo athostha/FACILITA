@@ -124,6 +124,6 @@ class MensagensController extends AppController{
         $this->Mensagem->solicitacao_id = $solicitacaoid;
         $this->set('mensagens', $this->Mensagem->find('all',
             array('conditions' => array('solicitacao_id' => $solicitacaoid),
-                'order' => array('Mensagem.id' => 'desc'))));
+                'order' => array('Mensagem.id' => 'asc'))));
     }
 }

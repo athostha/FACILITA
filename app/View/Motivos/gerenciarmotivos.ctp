@@ -22,10 +22,10 @@
     
     <td>
             <?php echo $this->Form->postLink(
-                    $this->Html->tag('i', '', array('class' => 'fa fa-close text-danger','data-original-title'=>'Finalizar')),
+                    $this->Html->tag('i', '', array('class' => 'fa fa-close text-danger','data-original-title'=>'Finalizar', 'title' => 'Excluir Motivo')),
                         array('action' => 'delete', $motivo['Motivo']['id']),
                         array('escape'=>false),
-                        __('Are you sure?'),
+                        __('Você realmente deseja deletar este motivo?'),
                        array('class' => 'btn btn-mini')
                         ); ?></td>
     <td><?php echo $motivo['Motivo']['id']; ?></td>

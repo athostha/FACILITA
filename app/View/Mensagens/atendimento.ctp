@@ -93,7 +93,7 @@
                 array(
                       'class'    => 'tip',
                       'escape'   => false,
-                      'confirm'  => 'Are you sure ?'
+                      'confirm'  => 'Você realmente deseja finalizar este atendimento?'
                      ));
                      ?>
 
@@ -227,21 +227,23 @@
                                 <div class="slimScrollBar"></div>
                                   <div class="slimScrollRail"></div>
                                 
-                            <div class="card-body b-t">
-                                <div class="row">
-                                    <div class="col-8">
-<?php
-echo $this->Form->create('Mensagem'); ?>
-<?php echo $this->Form->input('Mensagem.conteudo', array('rows' => '3', 'label'=>'', 'class'=>'form-control', 'placeholder'=> 'Digite sua mensagem aqui'));?>
-                                    </div>
-                                    <div class="col-4 text-right">
-<?php echo $this->Form->button('<i class="fa fa-paper-plane-o"></i>', array('type'=>'submit', 'class'=>'btn btn-info btn-circle btn-lg')); ?>
-<?php echo $this->Form->end(); ?>
-                                    </div>
+                            
+                        <div class="card-body b-t">
+                            <div class="row">
+                                <div class="col-8">
+                                    <?php
+                                    echo $this->Form->create('Mensagem'); ?>
+                                    <?php echo $this->Form->input('Mensagem.conteudo', array('rows' => '3', 'label'=>'', 'class'=>'form-control', 'placeholder'=> 'Digite sua mensagem aqui.'));?>
+                                                                        </div>
+                                                                        <div class="col-4 text-right">
+                                    <?php echo $this->Form->button('<i class="fa fa-paper-plane-o"></i>', array('type'=>'submit', 'class'=>'btn btn-info btn-circle btn-lg')); ?>
+                                    <?php echo $this->Form->end(); ?>
                                 </div>
                             </div>
                         </div>
-
+                        </div>
+                        <div class="card">
+                        </div>
                     </div>
                 </div>
 </div>

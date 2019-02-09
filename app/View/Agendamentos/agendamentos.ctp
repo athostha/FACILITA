@@ -31,7 +31,7 @@
             <tr>
                 <td><span class="text-muted">
                 <?php echo $this->Html->link(
-                    $this->Html->tag('i', '', array('class' => 'mdi mdi-calendar-remove text-inverse')),
+                    $this->Html->tag('i', '', array('class' => 'mdi mdi-calendar-remove text-inverse', 'title' => 'Finalizar Agendamento')),
                     array('action' => 'fechamento', $agendamento['Agendamento']['id']),
                     array('escape' => false)
                 ); ?></span></td>

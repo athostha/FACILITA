@@ -88,7 +88,8 @@ $(function() {
         position: 'left',
         size: "5px",
         height: '100%',
-        color: '#dcdcdc'
+        color: '#dcdcdc',
+        start: 'bottom'
     });
     // ============================================================== 
     // Resize all elements
